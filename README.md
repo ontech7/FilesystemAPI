@@ -30,9 +30,9 @@ gcc -std=c99 -O2 main.c main.h -o filesystem
 * Hashtable: https://en.wikipedia.org/wiki/Hash_table  
 
 No load and re-hashing was used in this project.  
-Free()`s are not implemented (very bad!)  
-Delete_r is a fake one but it still works for this project :(  
-Find uses a particular method to find elements and to order lexicographically (qsort)  
+Free()`s are not implemented (very bad!).  
+Delete_r is a fake one but it still works for this project :( .  
+Find uses a particular method to find elements and to order lexicographically (qsort), it's not the classic recursive method.  
 
 Tested on:
  - **Win7 Pro x64** - i7 4790k (4.0 GHz - 4core/8thread) - 16 GB DDR3 (1866 MHz) - SSD Samsung Evo 850 (250 GB)  
