@@ -20,10 +20,6 @@ A simple Filesystem using Hashtables. (No re-hashing)
 gcc -std=c99 -O2 main.c main.h -o filesystem  
 ```
 
-## Author
-
-**Andrea Losavio** - [facebook](https://www.facebook.com/andrea.losavio.7/)  
-
 ## Information
 
 * Filesystem: https://en.wikipedia.org/wiki/File_system  
@@ -39,3 +35,7 @@ Tested on:
  - **Elementary OS x64** - i7 6500U (2.6 GHz - 2core/4thread) - 16 GB DDR3 (1866 MHz) - SSD SanDisk (240 GB)  
 
 You can find any further information in the comments (main.c, main.h)
+
+## Author
+
+**Andrea Losavio** - [facebook](https://www.facebook.com/andrea.losavio.7/)  
