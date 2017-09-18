@@ -3,7 +3,7 @@
 #include <string.h>
 
 
-/* Defining hashTable size. `109` because it's a prime number and creates less collisions (github.com/ontech7/SieveOfEratosthenes) */
+/* Defining hashTable size. `109` because it's a prime number and generates less collisions (github.com/ontech7/SieveOfEratosthenes) */
 #define HASH_SIZE 109
 
 /* Defining conditions on tree */
@@ -190,6 +190,7 @@ void pushElement(DirectoryItem **pHead, char *szDirectory, char *szCompleteDir, 
 void removingElements(DirectoryItem **insertList, DirectoryItem **deleteList)
 {
 	unsigned int nDirectoryLenght;
+	unsigned int nFound = 0;
 
 	while ((*insertList) != NULL)
 	{
@@ -197,9 +198,10 @@ void removingElements(DirectoryItem **insertList, DirectoryItem **deleteList)
 		if (!(*deleteList)->bIsDeleteR)
 		{
 			/* Remove `deleteList` item from `insertList` based on `szCompleteDir` */
-			if (!strcmp((*insertList)->szCompleteDir, (*deleteList)->szCompleteDir))
+			if (!strcmp((*insertList)->szCompleteDir, (*deleteList)->szCompleteDir) && !nFound)
 			{
 				*insertList = (*insertList)->pNext;
+				nFound = 1;
 				continue;
 			}
 		}
