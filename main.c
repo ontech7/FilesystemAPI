@@ -2,7 +2,7 @@
  *						 *
  * Name:    Filesystem Hashtable (FS_HT).	 *
  * Subject: Algorithms and Principles of I.T.	 * 
- * Object:  University final project.		 *
+ * Object:  Subject final project.		 *
  * Credits: Andrea Losavio.			 *
  *						 *
  *	        Politecnico di Milano	         *
