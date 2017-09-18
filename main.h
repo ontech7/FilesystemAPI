@@ -189,7 +189,8 @@ void pushElement(DirectoryItem **pHead, char *szDirectory, char *szCompleteDir, 
 /* Removing items comparing 2 lists. */
 void removingElements(DirectoryItem **insertList, DirectoryItem **deleteList)
 {
-	unsigned int nDirectoryLenght;
+	unsigned int nDirectoryDeleteLenght;
+	unsigned int nDirectoryInsertLenght;
 	unsigned int nFound = 0;
 
 	while ((*insertList) != NULL)
@@ -198,21 +199,30 @@ void removingElements(DirectoryItem **insertList, DirectoryItem **deleteList)
 		if (!(*deleteList)->bIsDeleteR)
 		{
 			/* Remove `deleteList` item from `insertList` based on `szCompleteDir` */
-			if (!strcmp((*insertList)->szCompleteDir, (*deleteList)->szCompleteDir) && !nFound)
+			if (!strcmp((*insertList)->szCompleteDir, (*deleteList)->szCompleteDir))
 			{
 				*insertList = (*insertList)->pNext;
-				nFound = 1;
-				continue;
+				break;
 			}
 		}
 		/* Check if flag `bIsDeleteR` is true */
 		else
 		{
 			/* Remove `deleteList` items from `insertList` based on `szCompleteDir` */
-			nDirectoryLenght = strlen((*deleteList)->szCompleteDir);
-			if (!strncmp((*insertList)->szCompleteDir, (*deleteList)->szCompleteDir, nDirectoryLenght))
+			nDirectoryDeleteLenght = strlen((*deleteList)->szCompleteDir);
+			nDirectoryInsertLenght = strlen((*insertList)->szCompleteDir);
+			if (!strncmp((*insertList)->szCompleteDir, (*deleteList)->szCompleteDir, nDirectoryDeleteLenght))
 			{
-				*insertList = (*insertList)->pNext;
+				if (!nFound || nDirectoryInsertLenght > nDirectoryDeleteLenght)
+				{
+					*insertList = (*insertList)->pNext;
+					if (nDirectoryDeleteLenght == nDirectoryInsertLenght)
+						nFound = 1;
+				}
+				else if (nFound && nDirectoryDeleteLenght == nDirectoryInsertLenght)
+				{
+					break;
+				}
 				continue;
 			}
 		}
