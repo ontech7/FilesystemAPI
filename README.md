@@ -35,7 +35,7 @@ Delete_r is a fake one but it still works for this project :(
 Find uses a particular method to find elements and to order lexicographically (qsort)  
 
 Tested on:
- - Win7 Pro x64 - i7 4790k (4.0 GHz - 4core/8thread) - 16 GB DDR3 (1866 MHz) - SSD Samsung Evo 850 (250 GB)
- - Elementary OS x64 - i7 6500U (2.6 GHz - 2core/4thread) - 16 GB DDR3 (1866 MHz) - SSD SanDisk (240 GB)
+ - Win7 Pro x64 - i7 4790k (4.0 GHz - 4core/8thread) - 16 GB DDR3 (1866 MHz) - SSD Samsung Evo 850 (250 GB)  
+ - Elementary OS x64 - i7 6500U (2.6 GHz - 2core/4thread) - 16 GB DDR3 (1866 MHz) - SSD SanDisk (240 GB)  
 
 You can find any further information in the comments (main.c, main.h)
