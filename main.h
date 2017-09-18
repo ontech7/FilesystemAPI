@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
+
 /* Defining hashTable size. `109` because it's a prime number and creates less collisions (github.com/ontech7/SieveOfEratosthenes) */
 #define HASH_SIZE 109
 
@@ -21,10 +22,10 @@ typedef enum {
 /* Declaring and defining `tNode` struct */
 typedef struct tNode{
 	unsigned short		nKey;
-	char				*szDirectory;
-	char				*szCompleteDir;
-	char				*szContent;
-	type_t				tTypeInfo;
+	char			*szDirectory;
+	char			*szCompleteDir;
+	char			*szContent;
+	type_t			tTypeInfo;
 	struct tNode		*pNext;
 	struct tHashtable	*pNextTable;
 } Node;
@@ -37,38 +38,39 @@ typedef struct tHashtable{
 
 /* Declaring and defining `tDirectoryItem` struct */
 typedef struct tDirectoryItem {
-	char					*szDirectory;
-	char					*szCompleteDir;
-	unsigned short			bIsDeleteR;
+	char			*szDirectory;
+	char			*szCompleteDir;
+	unsigned short		bIsDeleteR;
 	struct tDirectoryItem	*pNext;
 } DirectoryItem;
 
 /* ------------------------------------------ Prototypes ---------------------------------------------*/
-int				compareStrings(const void* pString1, const void* pString2);
+int		compareStrings(const void* pString1, const void* pString2);
 unsigned int	getHashKey(const unsigned int nKey);
 unsigned int	char_to_ASCII(char* szWord);
 unsigned int	lengthCounter(char *szWord, char sDelim);
 unsigned int	listLenght(DirectoryItem **pList);
-char**			splitSentence(char *szPhrase, char *szDelim);
-Hashtable*		htMake(unsigned int nSize);
-Node**			htSearchAddr(Node **pElem, char *szDirectory);
-void			diInsert(DirectoryItem **pHead, char *szDirectory, char *szCompleteDir, unsigned short bIsDeleteR);
-void			htInsert(Hashtable **pHashtable, unsigned int nKey, char *szDirectory, char* szCompleteDir, type_t tTypeInfo);
-void			removingElements(DirectoryItem **insertList, DirectoryItem **deleteList);
-void			createFile(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryUNIX);
-void			createDirectory(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryUNIX);
-void			writeFile(Hashtable **pHashtable, char *szDirectoryUNIX, char *szContentOrig);
-void			readFile(Hashtable **pHashtable, char *szDirectoryUNIX);
-void			deleteResource(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryUNIX);
-void			deleteAll(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryUNIX);
-void			findElements(DirectoryItem **insertList, DirectoryItem **deleteList, char *szName);
+char**		splitSentence(char *szPhrase, char *szDelim);
+Hashtable*	htMake(unsigned int nSize);
+Node*		htNewNode(unsigned int nKey, char *szDirectory, char* szCompleteDir, type_t tTypeInfo);
+Node**		htSearchAddr(Node **pElem, char *szDirectory);
+void		pushElement(DirectoryItem **pHead, char *szDirectory, char *szCompleteDir, unsigned short bIsDeleteR);
+void		removingElements(DirectoryItem **insertList, DirectoryItem **deleteList);
+void		htInsert(Hashtable **pHashtable, unsigned int nKey, char *szDirectory, char* szCompleteDir, type_t tTypeInfo);
+void		createFile(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryUNIX);
+void		createDirectory(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryUNIX);
+void		writeFile(Hashtable **pHashtable, char *szDirectoryUNIX, char *szContentOrig);
+void		readFile(Hashtable **pHashtable, char *szDirectoryUNIX);
+void		deleteResource(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryUNIX);
+void		deleteAll(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryUNIX);
+void		findElements(DirectoryItem **insertList, DirectoryItem **deleteList, char *szName);
 /* ------------------------------------------------------------------------------------------------- */
 
 /* Compare 2 strings. Function pointer that works as `callback` for `qsort` */
 int compareStrings(const void* pString1, const void* pString2)
 {
-	char* szString1 = (char*)pString1;
-	char* szString2 = (char*)pString2;
+	char* szString1 = *(char**)pString1;
+	char* szString2 = *(char**)pString2;
 
 	return (strcmp(szString1, szString2));
 }
@@ -122,9 +124,9 @@ unsigned int listLenght(DirectoryItem **pList)
 /* Splitting `szPhrase` sentence in an array of strings */
 char** splitSentence(char *szPhrase, char *szDelim)
 {
-	char			*szBuffer = strdup(szPhrase);
-	char			*p = strtok(szBuffer, szDelim);
-	char			**szToken;
+	char		*szBuffer = strdup(szPhrase);
+	char		*p = strtok(szBuffer, szDelim);
+	char		**szToken;
 	unsigned int	i = 0;
 	unsigned int	nSizeArray = 0;
 
@@ -145,7 +147,7 @@ char** splitSentence(char *szPhrase, char *szDelim)
 Hashtable* htMake(unsigned int nSize)
 {
 	unsigned int	i;
-	Hashtable		*htTmp;
+	Hashtable	*htTmp;
 
 	htTmp = (Hashtable*)malloc(nSize * sizeof(Hashtable));
 
@@ -171,36 +173,17 @@ Node** htSearchAddr(Node **pElem, char *szDirectory)
 	return NOT_FOUND;
 }
 
-/* Pushing an element to the head of the list (for `DirectoryItem`) */
-void diInsert(DirectoryItem **pHead, char *szDirectory, char *szCompleteDir, unsigned short bIsDeleteR) 
+/* Pushing elements to the head of the list */
+void pushElement(DirectoryItem **pHead, char *szDirectory, char *szCompleteDir, unsigned short bIsDeleteR) 
 {
 	DirectoryItem* newElem = (DirectoryItem*)malloc(sizeof(DirectoryItem));
 
-	/* Setting all elements of the struct */
 	newElem->szDirectory = strdup(szDirectory);
 	newElem->szCompleteDir = strdup(szCompleteDir);
 	newElem->bIsDeleteR = bIsDeleteR;
 	newElem->pNext = *pHead;
 
 	*pHead = newElem;
-}
-
-/* Pushing an element to the head of the list (for Hashtable `pElem`) */
-void htInsert(Hashtable **pHashtable, unsigned int nKey, char *szDirectory, char* szCompleteDir, type_t tTypeInfo)
-{
-	Node **ndHead = &(*pHashtable)[nKey].pElem;
-	Node *ndTmp = (Node*)malloc(sizeof(Node));
-
-	/* Setting all elements of the struct */
-	ndTmp->nKey = nKey;
-	ndTmp->szDirectory = strdup(szDirectory);
-	ndTmp->szCompleteDir = strdup(szCompleteDir);
-	ndTmp->tTypeInfo = tTypeInfo;
-	ndTmp->szContent = NULL;
-	ndTmp->pNext = *ndHead;
-	ndTmp->pNextTable = NULL;
-
-	*ndHead = ndTmp;
 }
 
 /* Removing items comparing 2 lists. */
@@ -235,6 +218,27 @@ void removingElements(DirectoryItem **insertList, DirectoryItem **deleteList)
 	}
 }
 
+/* Inserting a `pElem` in the table and increasing his `nLength` (check `MAX_LENGTH`) */
+void htInsert(Hashtable **pHashtable, unsigned int nKey, char *szDirectory, char* szCompleteDir, type_t tTypeInfo)
+{
+	Node **ndHead = &(*pHashtable)[nKey].pElem;
+	Node *ndTmp = (Node*)malloc(sizeof(Node));
+
+	/* Increasing the number of resources: `nLength` */
+	(*pHashtable)[nKey].nLength += 1;
+
+	/* Setting all elements of the struct */
+	ndTmp->nKey = nKey;
+	ndTmp->szDirectory = strdup(szDirectory);
+	ndTmp->szCompleteDir = strdup(szCompleteDir);
+	ndTmp->tTypeInfo = tTypeInfo;
+	ndTmp->szContent = NULL;
+	ndTmp->pNext = *ndHead;
+	ndTmp->pNextTable = NULL;
+
+	*ndHead = ndTmp;
+}
+
 /* Create a file inside a given directory (UNIX-like) */
 void createFile(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryUNIX)
 {
@@ -242,8 +246,8 @@ void createFile(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectory
 	unsigned int	nKey;
 	unsigned int	nStringLength;
 	unsigned int	nSizeArray = lengthCounter(szDirectoryUNIX, '/');
-	char			**szSplitDir = splitSentence(szDirectoryUNIX, "/");
-	Node			**ndElemFound;
+	char		**szSplitDir = splitSentence(szDirectoryUNIX, "/");
+	Node		**ndElemFound;
 
 	if (nSizeArray <= MAX_DEPTH)
 	{
@@ -260,7 +264,7 @@ void createFile(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectory
 				nStringLength <= MAX_NAME)
 			{
 				htInsert(pHashtable, nKey, szSplitDir[i], szDirectoryUNIX, TYPE_FILE);
-				diInsert(pHead, szSplitDir[i], szDirectoryUNIX, 0);
+				pushElement(pHead, szSplitDir[i], szDirectoryUNIX, 0);
 				break;
 			}
 
@@ -298,8 +302,8 @@ void createDirectory(Hashtable **pHashtable, DirectoryItem **pHead, char *szDire
 	unsigned int	nKey;
 	unsigned int	nStringLength;
 	unsigned int	nSizeArray = lengthCounter(szDirectoryUNIX, '/');
-	char			**szSplitDir = splitSentence(szDirectoryUNIX, "/");
-	Node			**ndElemFound;
+	char		**szSplitDir = splitSentence(szDirectoryUNIX, "/");
+	Node		**ndElemFound;
 
 	if (nSizeArray <= MAX_DEPTH)
 	{
@@ -316,7 +320,7 @@ void createDirectory(Hashtable **pHashtable, DirectoryItem **pHead, char *szDire
 				(nStringLength) <= MAX_NAME)
 			{
 				htInsert(pHashtable, nKey, szSplitDir[i], szDirectoryUNIX, TYPE_DIR);
-				diInsert(pHead, szSplitDir[i], szDirectoryUNIX, 0);
+				pushElement(pHead, szSplitDir[i], szDirectoryUNIX, 0);
 				break;
 			}
 
@@ -350,8 +354,8 @@ void createDirectory(Hashtable **pHashtable, DirectoryItem **pHead, char *szDire
 /* Write inside a resource file located inside `pHashtable` */
 void writeFile(Hashtable **pHashtable, char *szDirectoryUNIX, char *szContentOrig)
 {
-	char			**szSplitDir = splitSentence(szDirectoryUNIX, "/");
-	char			*szContent = splitSentence(szContentOrig, "\"")[0];
+	char		**szSplitDir = splitSentence(szDirectoryUNIX, "/");
+	char		*szContent = splitSentence(szContentOrig, "\"")[0];
 	unsigned int	nSizeArray = lengthCounter(szDirectoryUNIX, '/');
 	unsigned int	nContentLenght = strlen(szContent);
 	unsigned int	nKey;
@@ -397,11 +401,11 @@ void writeFile(Hashtable **pHashtable, char *szDirectoryUNIX, char *szContentOri
 /* Read a resource file located inside `pHashtable` */
 void readFile(Hashtable **pHashtable, char *szDirectoryUNIX)
 {
-	char			**szSplitDir = splitSentence(szDirectoryUNIX, "/");
+	char		**szSplitDir = splitSentence(szDirectoryUNIX, "/");
 	unsigned int	nSizeArray = lengthCounter(szDirectoryUNIX, '/');
 	unsigned int	nKey;
 	unsigned int	i;
-	Node			**ndElemFound;
+	Node		**ndElemFound;
 
 	if (nSizeArray <= MAX_DEPTH)
 	{
@@ -442,11 +446,11 @@ void readFile(Hashtable **pHashtable, char *szDirectoryUNIX)
 /* Delete a resource inside the `pHashtable` */
 void deleteResource(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryUNIX)
 {
-	char			**szSplitDir = splitSentence(szDirectoryUNIX, "/");
+	char		**szSplitDir = splitSentence(szDirectoryUNIX, "/");
 	unsigned int	nSizeArray = lengthCounter(szDirectoryUNIX, '/');
 	unsigned int	nKey;
 	unsigned int	i;
-	Node			**ndElemFound;
+	Node		**ndElemFound;
 
 	if (nSizeArray <= MAX_DEPTH)
 	{
@@ -476,9 +480,9 @@ void deleteResource(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirec
 				if ((*ndElemFound)->pNextTable == NULL && !strcmp((*ndElemFound)->szCompleteDir, szDirectoryUNIX))
 				{
 					(*ndElemFound) = (*ndElemFound)->pNext;
-					(*pHashtable)[nKey].nLength--;
+					(*pHashtable)[nKey].nLength -= 1;
 					printf("ok\n");
-					diInsert(pHead, szSplitDir[i], szDirectoryUNIX, 0);
+					pushElement(pHead, szSplitDir[i], szDirectoryUNIX, 0);
 					return;
 				}
 				else
@@ -497,11 +501,11 @@ void deleteResource(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirec
 /* Delete a resource and all the children inside the `pHashtable` */
 void deleteAll(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryUNIX)
 {
-	char			**szSplitDir = splitSentence(szDirectoryUNIX, "/");
+	char		**szSplitDir = splitSentence(szDirectoryUNIX, "/");
 	unsigned int	nSizeArray = lengthCounter(szDirectoryUNIX, '/');
 	unsigned int	nKey;
 	unsigned int	i;
-	Node			**ndElemFound;
+	Node		**ndElemFound;
 
 	if (nSizeArray <= MAX_DEPTH)
 	{
@@ -528,7 +532,7 @@ void deleteAll(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryU
 			{
 				*ndElemFound = NULL;
 				printf("ok\n");
-				diInsert(pHead, szSplitDir[i], szDirectoryUNIX, 1);
+				pushElement(pHead, szSplitDir[i], szDirectoryUNIX, 1);
 				return;
 			}
 		}
@@ -542,7 +546,7 @@ void deleteAll(Hashtable **pHashtable, DirectoryItem **pHead, char *szDirectoryU
 /* Find all resources (files/folders) named `szName` */
 void findElements(DirectoryItem **insertList, DirectoryItem **deleteList, char *szName)
 {
-	char			**szDirectories;
+	char		**szDirectories;
 	unsigned int	nResLength = strlen(szName);
 	unsigned int	nSizeDeleteList = listLenght(deleteList);
 	unsigned int	nSizeFinalList;
