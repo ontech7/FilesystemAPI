@@ -31,7 +31,7 @@ gcc -std=c99 -O2 main.c main.h -o filesystem
 
 No load and re-hashing was used in this project.  
 Free()`s are not implemented (very bad!)  
-Delete_r is a fake one but it still works for this project :(
+Delete_r is a fake one but it still works for this project :(  
 Find uses a particular method to find elements and to order lexicographically (qsort)  
 
 Tested on:
