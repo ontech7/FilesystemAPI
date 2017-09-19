@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 /* Defining hashTable size. `109` because it's a prime number and generates less collisions (github.com/ontech7/SieveOfEratosthenes) */
 #define HASH_SIZE 109
 
