@@ -9,12 +9,11 @@
  *						 *
  * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
 #include "main.h"
 
 int main()
 {
-	Hashtable		*pHashtable = htMake(HASH_SIZE);
+	Hashtable	*pHashtable = htMake(HASH_SIZE);
 	DirectoryItem	*insertList = NULL;
 	DirectoryItem	*deleteList = NULL;
 
@@ -65,6 +64,5 @@ int main()
 			}
 		}
 	}
-
 	return (0);
 }
