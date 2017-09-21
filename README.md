@@ -10,7 +10,7 @@ A simple Filesystem using Hashtables. (No re-hashing)
 > **delete <path>** - Delete one resource without any children. - Prints "ok" if it's all right.  
 > **delete_r <path>** - Delete recursively the resource + his children. - Prints "ok" if it's all right.  
 > **write <path>** <content> - Write inside a file. Prints "ok <number_of_characters>" if the file exists.  
-> **read <path>** - Read the content of a file. Prints "contenuto <text>" if the file exists.  
+> **read <path>** - Read the content of a file. Prints "contenuto <content>" if the file exists.  
 > **find <name>** - Find every folder/file with the <name> given. - Prints every <path_find> if file/s exists/-.  
 > **exit** - Exit from the program (return 0 successfully).  
 
