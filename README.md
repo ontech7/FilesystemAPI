@@ -5,13 +5,13 @@ A simple Filesystem using Hashtables. (No re-hashing)
 
 ## Commands
 
-> **create <path>** - Create a file with the path given. - Prints "ok" if it's all right.  
-> **create_dir <path>** - Create a directory with the path given. - Prints "ok" if it's all right.  
-> **delete <path>** - Delete one resource without any children. - Prints "ok" if it's all right.  
-> **delete_r <path>** - Delete recursively the resource + his children. - Prints "ok" if it's all right.  
-> **write <path> <content>** - Write inside a file. Prints "ok <number_of_characters>" if the file exists.  
-> **read <path>** - Read the content of a file. Prints "contenuto <content> " if the file exists.  
-> **find <name>** - Find every folder/file with the <name> given. - Prints every <path_find> if file/s exists/-.  
+> **create <_path>** - Create a file with the path given. - Prints "ok" if it's all right.  
+> **create_dir <_path>** - Create a directory with the path given. - Prints "ok" if it's all right.  
+> **delete <_path>** - Delete one resource without any children. - Prints "ok" if it's all right.  
+> **delete_r <_path>** - Delete recursively the resource + his children. - Prints "ok" if it's all right.  
+> **write <_path> <_content>** - Write inside a file. Prints "ok <number_of_characters>" if the file exists.  
+> **read <_path>** - Read the content of a file. Prints "contenuto <_content> " if the file exists.  
+> **find <_name>** - Find every folder/file with the <name> given. - Prints every <_path_find> if file/s exists/-.  
 > **exit** - Exit from the program (return 0 successfully).  
 
 ## Compile
