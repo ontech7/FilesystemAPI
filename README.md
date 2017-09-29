@@ -25,8 +25,8 @@ gcc -std=c99 -O2 main.c main.h -o filesystem
 * Filesystem: https://en.wikipedia.org/wiki/File_system  
 * Hashtable: https://en.wikipedia.org/wiki/Hash_table  
 
-No load and re-hashing was used in this project.  
-Free()`s are not implemented (very bad!).  
+No load and re-hashing were used in this project.  
+Free()s are not implemented (very bad!).  
 Delete_r is a fake one but it still works for this project :( .  
 Find uses a particular method to find elements and to order lexicographically (qsort), it's not the classic recursive method.  
 
